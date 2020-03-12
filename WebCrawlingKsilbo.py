@@ -42,4 +42,4 @@ def rednooby_cralwler(input_search, filename):
     text.close()
     return post_dict
 
-rednooby_cralwler('', 'd:\\aihhi.txt')
+rednooby_cralwler('울산+바이오', 'd:\\aihhi.txt')
