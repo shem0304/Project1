@@ -5,12 +5,9 @@ from itertools import count
 import io
 import collections
 
-def rednooby_cralwler(input_search, filename):
+def rednooby_cralwler(maxpage, input_search, filename):
 
     url = 'https://search.naver.com/search.naver'
-
-    ds = '2018-01-01'  # 시작일
-    de = '2020-03-12'  # 종료일
 
     post_dict = OrderedDict() #OrderedDict를 사용하여, key에 url 입력
 
@@ -18,16 +15,13 @@ def rednooby_cralwler(input_search, filename):
     text2 = io.open('D:\\articleinfo', 'w', encoding="utf-8")
 
     page = 1
-    maxpage_t = 2377  # 11= 2페이지 21=3페이지 31=4페이지  ...81=9페이지 , 91=10페이지, 101=11페이지
-
-    while page <= maxpage_t: #1부터 무한대로 시작(break or return이 나올때까지)
+    maxpage_t = (int(maxpage) - 1) * 10 + 1  # 11= 2페이지 21=3페이지 31=4페이지  ...81=9페이지 , 91=10페이지, 101=11페이지
+    while page <=  maxpage_t : #1부터 무한대로 시작(break or return이 나올때까지)
         params = {
             'query' : input_search, #검색어를 사용자로부터 받아옴
             'sm'    : 'tab_jum',
             'where' : 'news',
             'start' : (page-1)*10+1,
-            'ds'    : ds,         #시작일
-            'de'    : de,         #종료일
         }
         #print(page)
         response = requests.get(url, params =params)
@@ -51,7 +45,9 @@ def rednooby_cralwler(input_search, filename):
     return post_dict
 
 def main() :
-    rednooby_cralwler('게놈', 'd:\\aihhi.txt')
+    maxpage = input("최대 크롤링할 페이지 수 입력하시오: ")
+    query = input("검색어 입력: ")
+    rednooby_cralwler(maxpage, query, 'd:\\aihhi.txt')
 
 if __name__ == "__main__":
     main()

@@ -94,7 +94,6 @@ def crawler(maxpage, query, sort, s_date, e_date):
         result = {"date": date_text, "title": title_text, "source": source_text, "contents": contents_text, "link": link_text}
 
         print(page)
-        print(result)
         df = pd.DataFrame(result)  # df로 변환
         page += 10
 
