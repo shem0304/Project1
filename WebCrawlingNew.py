@@ -3,6 +3,7 @@ from datetime import datetime
 import requests
 import pandas as pd
 import re
+import WordCloudAI
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''' 
  < naver 뉴스 검색시 리스트 크롤링하는 프로그램 > _select사용 
 - 크롤링 해오는 것 : 링크,제목,신문사,날짜,내용요약본 
@@ -22,7 +23,6 @@ RESULT_PATH = 'd:/'  # 결과 저장할 경로
 now = datetime.now()  # 파일이름 현 시간으로 저장하기
 
 #날짜 정제화 함수
-
 def date_cleansing(test):
     try:
         # 지난 뉴스
@@ -89,6 +89,9 @@ def crawler(maxpage, query, sort, s_date, e_date):
             # print('==='*40)
             # print(contents_list)
             contents_cleansing(contents_list)  # 본문요약 정제화
+
+        # 그래프와 워드크라우드 그리기
+        #WordCloudAI.DrawGrap(atags)
 
         # 모든 리스트 딕셔너리형태로 저장
         result = {"date": date_text, "title": title_text, "source": source_text, "contents": contents_text, "link": link_text}

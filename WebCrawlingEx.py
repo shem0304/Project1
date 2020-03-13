@@ -12,18 +12,18 @@ def rednooby_cralwler(maxpage, input_search, filename):
     post_dict = OrderedDict() #OrderedDict를 사용하여, key에 url 입력
 
     text = io.open(filename, 'w', encoding="utf-8")
-    text2 = io.open('D:\\articleinfo', 'w', encoding="utf-8")
+    #text2 = io.open('D:\\articleinfo', 'w', encoding="utf-8")
 
     page = 1
     maxpage_t = (int(maxpage) - 1) * 10 + 1  # 11= 2페이지 21=3페이지 31=4페이지  ...81=9페이지 , 91=10페이지, 101=11페이지
-    while page <=  maxpage_t : #1부터 무한대로 시작(break or return이 나올때까지)
+    while page < maxpage_t : #1부터 무한대로 시작(break or return이 나올때까지)
         params = {
             'query' : input_search, #검색어를 사용자로부터 받아옴
             'sm'    : 'tab_jum',
             'where' : 'news',
             'start' : (page-1)*10+1,
         }
-        #print(page)
+        page += 1
         response = requests.get(url, params =params)
         html = response.text
 
@@ -38,7 +38,7 @@ def rednooby_cralwler(maxpage, input_search, filename):
                 break                     #작업종료
             print(tag.text)
             text.write(tag.text)
-            text2.write(str(len(post_dict))+', ' + tag.text+',  '+tag['href']+'\n\n')
+            #text2.write(str(len(post_dict))+', ' + tag.text+',  '+tag['href']+'\n\n')
             post_dict[tag['href']] = tag.text
             print('%s===> ' % len(post_dict))
     text.close()
