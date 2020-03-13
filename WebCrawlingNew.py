@@ -52,16 +52,29 @@ def contents_cleansing(contents):
     contents_text.append(third_cleansing_contents)
   # print(contents_text)
 
-def crawler(maxpage, query, sort, s_date, e_date):
+def crawler():
+    #def crawler(maxpage, query, sort, s_date, e_date):
 
-    s_from = s_date.replace(".", "")
-    e_to = e_date.replace(".", "")
+   # s_from = s_date.replace(".", "")
+   # e_to = e_date.replace(".", "")
     page = 1
+    startValue = 1
+
+    query = "인공지능"
 
     #maxpage_t = (int(maxpage) - 1) * 10 + 1  # 11= 2페이지 21=3페이지 31=4페이지  ...81=9페이지 , 91=10페이지, 101=11페이지
-    for page in count(1):  # 1부터 무한대로 시작(break or return이 나올때까지)
-        url = "https://search.naver.com/search.naver?where=news&query=" + query + "&sort=" + sort + "&ds=" + s_date + "&de=" + e_date + "&nso=so%3Ar%2Cp%3Afrom" + s_from + "to" + e_to + "%2Ca%3A&start=" + str(
-            page)
+    for page in range(startValue, 100):  # 1부터 무한대로 시작(break or return이 나올때까지)
+        #url = "https://search.naver.com/search.naver?where=news&query=" + query + "&sort=" + sort + "&ds=" + s_date + "&de=" + e_date + "&nso=so%3Ar%2Cp%3Afrom" + s_from + "to" + e_to + "%2Ca%3A&start=" + str(
+        url="https://search.naver.com/search.naver?where=news&query=" + query + "&nso=so&start=" + str(startValue)
+
+        print(url)
+        startValue = startValue + 10
+        #if page==int(maxpage):
+        if page == 100:
+            break;
+        print('%s====>' % page)
+
+
         response = requests.get(url)
 
         html = response.text
@@ -97,10 +110,6 @@ def crawler(maxpage, query, sort, s_date, e_date):
         # 모든 리스트 딕셔너리형태로 저장
         result = {"date": date_text, "title": title_text, "source": source_text, "contents": contents_text, "link": link_text}
 
-        page += 1
-        if page==int(maxpage):
-            break;
-        print('%s====>' % page)
         df = pd.DataFrame(result)  # df로 변환
 
     # 새로 만들 파일이름 지정
@@ -108,12 +117,13 @@ def crawler(maxpage, query, sort, s_date, e_date):
     df.to_excel(RESULT_PATH + outputFileName, sheet_name='sheet1')
 
 def main():
-    info_main = input("=" * 50 + "\n" + "입력 형식에 맞게 입력해주세요." + "\n" + " 시작하시려면 Enter를 눌러주세요." + "\n" + "=" * 50)
+   # info_main = input("=" * 50 + "\n" + "입력 형식에 맞게 입력해주세요." + "\n" + " 시작하시려면 Enter를 눌러주세요." + "\n" + "=" * 50)
 
-    maxpage = input("최대 크롤링할 페이지 수 입력하시오: ")
-    query = input("검색어 입력: ")
-    sort = input("뉴스 검색 방식 입력(관련도순=0  최신순=1  오래된순=2): ")  # 관련도순=0  최신순=1  오래된순=2
-    s_date = input("시작날짜 입력(2019.01.04):")  # 2019.01.04
-    e_date = input("끝날짜 입력(2019.01.05):")  # 2019.01.05
-    crawler(maxpage, query, sort, s_date, e_date)
+   # maxpage = input("최대 크롤링할 페이지 수 입력하시오: ")
+   # query = input("검색어 입력: ")
+   # sort = input("뉴스 검색 방식 입력(관련도순=0  최신순=1  오래된순=2): ")  # 관련도순=0  최신순=1  오래된순=2
+   # s_date = input("시작날짜 입력(2019.01.04):")  # 2019.01.04
+   # e_date = input("끝날짜 입력(2019.01.05):")  # 2019.01.05
+   # crawler(maxpage, query, sort, s_date, e_date)
+    crawler()
 main()
