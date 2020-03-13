@@ -98,7 +98,7 @@ def crawler(maxpage, query, sort, s_date, e_date):
 
         print(page)
         df = pd.DataFrame(result)  # df로 변환
-        page += 10
+        page += 1
 
     # 새로 만들 파일이름 지정
     outputFileName = '%s-%s-%s  %s시 %s분 %s초 merging.xlsx' % (now.year, now.month, now.day, now.hour, now.minute, now.second)
