@@ -15,15 +15,13 @@ def rednooby_cralwler(maxpage, input_search, filename):
     #text2 = io.open('D:\\articleinfo', 'w', encoding="utf-8")
 
     page = 1
-    maxpage_t = (int(maxpage) - 1) * 10 + 1  # 11= 2페이지 21=3페이지 31=4페이지  ...81=9페이지 , 91=10페이지, 101=11페이지
-    while page < maxpage_t : #1부터 무한대로 시작(break or return이 나올때까지)
+    for page in count(1) : #1부터 무한대로 시작(break or return이 나올때까지)
         params = {
             'query' : input_search, #검색어를 사용자로부터 받아옴
             'sm'    : 'tab_jum',
             'where' : 'news',
             'start' : (page-1)*10+1,
         }
-        page += 1
         response = requests.get(url, params =params)
         html = response.text
 
@@ -34,13 +32,16 @@ def rednooby_cralwler(maxpage, input_search, filename):
         title_list = soup.select('._sp_each_url._sp_each_title')
 
         for tag in title_list:
-            if tag['href'] in post_dict:  #현재 저장할 링크(key)가 이미 post_dict에 있으면
-                break                     #작업종료
+            #if tag['href'] in post_dict:  #현재 저장할 링크(key)가 이미 post_dict에 있으면
+            #    break                     #작업종료
             print(tag.text)
             text.write(tag.text)
             #text2.write(str(len(post_dict))+', ' + tag.text+',  '+tag['href']+'\n\n')
             post_dict[tag['href']] = tag.text
             print('%s===> ' % len(post_dict))
+        page += 1
+        print('%s====>' % page)
+
     text.close()
     return post_dict
 

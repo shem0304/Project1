@@ -21,8 +21,4 @@ font_name = font_manager.FontProperties(fname=font_location).get_name()
 matplotlib.rc('font', family=font_name)
 
 # 차트 종류, 제목, 차트 크기, 범례, 폰트 크기 설정
-ax = df_basicYear.plot(kind='bar', title='날씨', figsize=(12, 4), legend=True, fontsize=12)
-ax.set_xlabel('년도', fontsize=12)          # x축 정보 표시
-ax.set_ylabel('과제수', fontsize=12)     # y축 정보 표시
-
-plt.show()
+#df_basicYear.plot(x=)

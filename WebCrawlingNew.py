@@ -3,6 +3,7 @@ from datetime import datetime
 import requests
 import pandas as pd
 import re
+from itertools import count
 import WordCloudAI
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''' 
  < naver 뉴스 검색시 리스트 크롤링하는 프로그램 > _select사용 
@@ -57,8 +58,8 @@ def crawler(maxpage, query, sort, s_date, e_date):
     e_to = e_date.replace(".", "")
     page = 1
 
-    maxpage_t = (int(maxpage) - 1) * 10 + 1  # 11= 2페이지 21=3페이지 31=4페이지  ...81=9페이지 , 91=10페이지, 101=11페이지
-    while page <= maxpage_t:
+    #maxpage_t = (int(maxpage) - 1) * 10 + 1  # 11= 2페이지 21=3페이지 31=4페이지  ...81=9페이지 , 91=10페이지, 101=11페이지
+    for page in count(1):  # 1부터 무한대로 시작(break or return이 나올때까지)
         url = "https://search.naver.com/search.naver?where=news&query=" + query + "&sort=" + sort + "&ds=" + s_date + "&de=" + e_date + "&nso=so%3Ar%2Cp%3Afrom" + s_from + "to" + e_to + "%2Ca%3A&start=" + str(
             page)
         response = requests.get(url)
@@ -96,9 +97,11 @@ def crawler(maxpage, query, sort, s_date, e_date):
         # 모든 리스트 딕셔너리형태로 저장
         result = {"date": date_text, "title": title_text, "source": source_text, "contents": contents_text, "link": link_text}
 
-        print(page)
-        df = pd.DataFrame(result)  # df로 변환
         page += 1
+        if page==int(maxpage):
+            break;
+        print('%s====>' % page)
+        df = pd.DataFrame(result)  # df로 변환
 
     # 새로 만들 파일이름 지정
     outputFileName = '%s-%s-%s  %s시 %s분 %s초 merging.xlsx' % (now.year, now.month, now.day, now.hour, now.minute, now.second)
